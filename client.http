@@ -17,7 +17,6 @@ POST {{basUrl}}/sessions
 Content-Type: application/json
 
 {
-    "name": "Victor Trajano",
     "email": "victor.silva@koper.com.br",
     "password": "123456"
 }
