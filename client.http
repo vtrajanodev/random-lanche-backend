@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
     "name": "Victor Trajano",
-    "email": "victor5.silva@koper.com.br",
+    "email": "victor8.silva@koper.com.br",
     "password": "123456"
 }
 
@@ -18,7 +18,7 @@ POST {{basUrl}}/sessions
 Content-Type: application/json
 
 {
-    "email": "victor5.silva@koper.com.br",
+    "email": "victor8.silva@koper.com.br",
     "password": "123456"
 }
 
@@ -28,3 +28,17 @@ Content-Type: application/json
 POST {{basUrl}}/questions
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+{
+ "title": "Teste de mais uma 6",
+ "content": "Victor é full stack papai 2"   
+}
+
+###
+
+# @name list_questions
+GET {{basUrl}}/questions?page=1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
