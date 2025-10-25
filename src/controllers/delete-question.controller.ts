@@ -1,7 +1,7 @@
 import { Controller, Delete, Param, UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "src/auth/jwt-auth-guard"; // ⚠️ Use o guard, não a strategy
-import { ZodValidationPipe } from "src/pipes/zod-validation.pipe";
-import { PrismaService } from "src/prisma/prisma.serivce";
+import { JwtAuthGuard } from "@/auth/jwt-auth-guard"; // ⚠️ Use o guard, não a strategy
+import { ZodValidationPipe } from "@/pipes/zod-validation.pipe";
+import { PrismaService } from "@/prisma/prisma.serivce";
 import z from "zod";
 
 const questionIdQueryParamSchema = z.uuid();
