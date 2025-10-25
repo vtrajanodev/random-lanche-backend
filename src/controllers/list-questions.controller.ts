@@ -4,12 +4,20 @@ import { ZodValidationPipe } from "src/pipes/zod-validation.pipe";
 import { PrismaService } from "src/prisma/prisma.serivce";
 import z from "zod";
 
-const pageQueryParamSchema = z
-  .string()
-  .optional()
-  .default("1")
-  .transform(Number)
-  .pipe(z.number().min(1));
+const pageQueryParamSchema = z.object({
+  limit: z
+    .string()
+    .optional()
+    .default("1")
+    .transform(Number)
+    .pipe(z.number().min(1)),
+  offset: z
+    .string()
+    .optional()
+    .default("0")
+    .transform(Number)
+    .pipe(z.number().int().min(0)),
+});
 
 const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema);
 
@@ -21,19 +29,25 @@ export class ListQuestionsController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  async handle(@Query("page", queryValidationPipe) page: PageQueryParamSchema) {
-    const perPage = 4;
+  async handle(@Query(queryValidationPipe) query: PageQueryParamSchema) {
+    const { limit, offset } = query;
 
     const questions = await this.prisma.question.findMany({
-      take: perPage,
-      skip: (page - 1) * perPage,
+      take: limit,
+      skip: (offset - 1) * limit,
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    const total = questions.length;
+    const total = await this.prisma.question.count();
 
-    return { questions, total };
+    return {
+      total,
+      limit,
+      offset,
+      count: questions.length,
+      questions,
+    };
   }
 }

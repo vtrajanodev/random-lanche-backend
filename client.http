@@ -30,14 +30,14 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
- "title": "Teste de mais uma 6",
+ "title": "Teste de mais uma 11",
  "content": "Victor é full stack papai 2"   
 }
 
 ###
 
 # @name list_questions
-GET {{basUrl}}/questions?page=1
+GET {{basUrl}}/questions?limit=10&offset=1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
