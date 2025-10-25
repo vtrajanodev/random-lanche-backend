@@ -42,3 +42,10 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
+
+# @name delete_question
+DELETE {{basUrl}}/questions/1235455
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###

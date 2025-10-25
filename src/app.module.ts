@@ -7,6 +7,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthenticateController } from "./controllers/authenticate.controller";
 import { CreateQuestionController } from "./controllers/create-question.controller";
 import { ListQuestionsController } from "./controllers/list-questions.controller";
+import { DeleteQuestionController } from "./controllers/delete-question.controller";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ListQuestionsController } from "./controllers/list-questions.controller
     AuthenticateController,
     CreateQuestionController,
     ListQuestionsController,
+    DeleteQuestionController,
   ],
   providers: [PrismaService],
 })
