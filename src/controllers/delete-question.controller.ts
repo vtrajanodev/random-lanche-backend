@@ -1,5 +1,5 @@
 import { Controller, Delete, Param, UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "@/auth/jwt-auth-guard"; // ⚠️ Use o guard, não a strategy
+import { JwtAuthGuard } from "@/auth/jwt-auth-guard";
 import { ZodValidationPipe } from "@/pipes/zod-validation.pipe";
 import { PrismaService } from "@/prisma/prisma.serivce";
 import z from "zod";
