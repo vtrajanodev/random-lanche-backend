@@ -1,8 +1,8 @@
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
-import { JwtStrategy } from "@/auth/jwt.strategy";
 import { ZodValidationPipe } from "@/pipes/zod-validation.pipe";
 import { PrismaService } from "@/prisma/prisma.serivce";
 import z from "zod";
+import { JwtAuthGuard } from "@/auth/jwt-auth-guard";
 
 const pageQueryParamSchema = z.object({
   limit: z
@@ -24,7 +24,7 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema);
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>;
 
 @Controller("/questions")
-@UseGuards(JwtStrategy)
+@UseGuards(JwtAuthGuard)
 export class ListQuestionsController {
   constructor(private prisma: PrismaService) {}
 
