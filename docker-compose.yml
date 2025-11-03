@@ -1,15 +1,53 @@
-version: "3.8"
-
 services:
   postgres:
-    container_name: nest-clean-pg
-    image: postgres
-    ports:
-      - "5432:5432"
+    container_name: random-lanche-postgres
+    image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-random_lanche}
       PGDATA: /data/postgres
+    ports:
+      - "${DB_PORT:-5434}:5432"
     volumes:
-      - ./data/pg:/data/postgres
+      - postgres_data:/data/postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-random_lanche}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - random-lanche-network
+
+  app:
+    container_name: random-lanche-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-random_lanche}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      PORT: ${PORT:-3333}
+      NODE_ENV: ${NODE_ENV:-development}
+    ports:
+      - "${PORT:-3333}:${PORT:-3333}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    networks:
+      - random-lanche-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  random-lanche-network:
+    driver: bridge
